@@ -19,5 +19,8 @@
 	],
 	"require": {
 		"resque/php-resque": "1.3.x"
-	}
+	},
+	"bin": [
+		"bin/resque-scheduler"
+	]
 }
