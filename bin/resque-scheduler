@@ -7,13 +7,21 @@ if (!empty($RESQUE_PHP)) {
 	require_once $RESQUE_PHP;
 }
 // Otherwise, if we have no Resque then assume it is in the include path
-else if (!class_exists('Resque')) {
-	require_once 'Resque/Resque.php';
-}
+// Find and initialize Composer
+$files = array(
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+);
 
-// Load resque-scheduler
-require_once dirname(__FILE__) . '/lib/ResqueScheduler.php';
-require_once dirname(__FILE__) . '/lib/ResqueScheduler/Worker.php';
+$found = false;
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
+}
 
 $REDIS_BACKEND = getenv('REDIS_BACKEND');
 $REDIS_BACKEND_DB = getenv('REDIS_BACKEND_DB');
